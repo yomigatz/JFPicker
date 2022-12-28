@@ -2,6 +2,8 @@ package com.Jfpicker.wheelpicker.wheelview;
 
 import android.graphics.Color;
 
+import androidx.annotation.Px;
+
 import com.Jfpicker.wheelpicker.wheelview.format.WheelFormatListener;
 import com.Jfpicker.wheelpicker.wheelview.format.AlphaGradientListener;
 import com.Jfpicker.wheelpicker.wheelview.format.TextSizeGradientListener;
@@ -36,6 +38,10 @@ public class WheelAttrs {
     private boolean translateYZ = true;
     // 滚轮总角度，决定滚轮的弯曲程度，0 < itemDegreeTotal <= 180
     private float itemDegreeTotal = 180.f;
+    // 偏移方向
+    private int offsetDirection = 0;
+    // 偏移距离
+    private float offsetDistance = 0f;
     // 除了选中项以外，上下各有几项，总数量为 wheelItemCount * 2 + 1
     private int halfItemCount = 3;
     /*
@@ -109,6 +115,22 @@ public class WheelAttrs {
 
     public void setWheel(boolean wheel) {
         isWheel = wheel;
+    }
+
+    public void setOffsetDirection(int direction) {
+        offsetDirection = direction;
+    }
+
+    public int getOffsetDirection() {
+        return offsetDirection;
+    }
+
+    public void setOffsetDistance(@Px float distance) {
+        offsetDistance = distance;
+    }
+
+    public float getOffsetDistance() {
+        return offsetDistance;
     }
 
     public boolean isTranslateYZ() {

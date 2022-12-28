@@ -10,6 +10,12 @@
         <attr name="itemDegreeTotal" format="float" />
         <attr name="halfItemCount" format="integer" />
         <attr name="wheelItemSize" format="dimension" />
+        <attr name="offsetDirection" format="enum">
+            <enum name="None" value="0" />
+            <enum name="Left" value="1" />
+            <enum name="Right" value="2" />
+        </attr>
+        <attr name="offsetDistance" format="dimension" />
 
         <!-- 文字  -->
         <attr name="wheelTextColor" format="color" />

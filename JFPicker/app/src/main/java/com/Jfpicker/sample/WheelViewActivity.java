@@ -44,13 +44,20 @@ public class WheelViewActivity extends AppCompatActivity {
     private void initWheelView() {
         ArrayList<String> strList = new ArrayList<>();
         strList.add("北京市");
+        strList.add("上海市");
         strList.add("天津市");
+        strList.add("上海市");
         strList.add("河北省");
+        strList.add("上海市");
         strList.add("山西省");
-        strList.add("内蒙古自治区");
+        strList.add("上海市");
+        strList.add("内蒙古");
+        strList.add("上海市");
         strList.add("辽宁省");
+        strList.add("上海市");
         strList.add("吉林省");
-        strList.add("黑龙江省");
+        strList.add("上海市");
+        strList.add("黑龙江");
         strList.add("上海市");
         strList.add("江苏省");
         WheelDataAdapter adapter = new WheelDataAdapter();

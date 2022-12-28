@@ -64,6 +64,8 @@ public class WheelView extends FrameLayout {
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WheelView);
             wheelAttrs.setWheel(a.getBoolean(R.styleable.WheelView_isWheel, true));
+            wheelAttrs.setOffsetDirection(a.getInt(R.styleable.WheelView_offsetDirection, 0));
+            wheelAttrs.setOffsetDistance(a.getDimension(R.styleable.WheelView_offsetDistance, 0f));
             wheelAttrs.setTranslateYZ(a.getBoolean(R.styleable.WheelView_translateYZ, true));
             wheelAttrs.setItemDegreeTotal(a.getFloat(R.styleable.WheelView_itemDegreeTotal, 180.f));
             wheelAttrs.setHalfItemCount(a.getInt(R.styleable.WheelView_halfItemCount, 3));

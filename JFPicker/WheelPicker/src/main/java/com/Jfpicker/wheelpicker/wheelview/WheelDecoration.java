@@ -4,6 +4,7 @@ import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +26,7 @@ abstract class WheelDecoration extends RecyclerView.ItemDecoration {
     float haltItemDegreeTotal;
     float halfItemHeight;
     float itemPreDegree;
-    float wheelRadio;
+    float wheelRadius;
 
     /**
      * 3D旋转
@@ -42,7 +43,7 @@ abstract class WheelDecoration extends RecyclerView.ItemDecoration {
         this.haltItemDegreeTotal = attrs.getItemDegreeTotal() / 2;
         this.halfItemHeight = attrs.getItemSize() / 2.0f;
         this.itemPreDegree = attrs.getItemDegreeTotal() / (attrs.getHalfItemCount() * 2 + 1);
-        wheelRadio = (float) radianToRadio(attrs.getItemSize(), itemPreDegree);
+        wheelRadius = (float) radianToRadius(attrs.getItemSize(), itemPreDegree);
 
         camera = new Camera();
         matrix = new Matrix();
@@ -103,20 +104,35 @@ abstract class WheelDecoration extends RecyclerView.ItemDecoration {
         float itemCenterY = rect.exactCenterY();
         float scrollOffY = itemCenterY - parentCenterY;
         float rotateDegreeX = scrollOffY * itemPreDegree / attrs.getItemSize();
+        Log.d("NRRR", "rotateDegreeX:" + rotateDegreeX);
         c.save();
         if (attrs.isWheel()) {
             float rotateSinX = (float) Math.sin(Math.toRadians(rotateDegreeX));
-            float rotateOffY = scrollOffY - wheelRadio * rotateSinX;
+            float rotateOffY = scrollOffY - wheelRadius * rotateSinX;
+            Log.d("NRRR", "rotateSinX:" + rotateSinX);
+            Log.d("NRRR", "rotateOffY:" + rotateOffY);
+            float tempX = 0.0f;
+            switch (attrs.getOffsetDirection()) {
+                case 1: {
+                    tempX = -Math.abs(attrs.getOffsetDistance() / attrs.getItemDegreeTotal() * rotateDegreeX);
+                    break;
+                }
+                case 2: {
+                    tempX = Math.abs(attrs.getOffsetDistance() / attrs.getItemDegreeTotal() * rotateDegreeX);
+                    break;
+                }
+            }
+
             //平移画布，使靠外的项贴近中间项，不至于因为滚轮的圆弧效果间距过大，实现因旋转导致界面视角的偏移，为了更好的滚轮显示效果
             if (attrs.isTranslateYZ()) {
-                c.translate(0.0f, -rotateOffY);
+                c.translate(tempX, -rotateOffY);
             }
             camera.save();
             //平移z轴，为了更好的滚轮显示效果
-            if (attrs.isTranslateYZ()) {
-                float z = (float) (wheelRadio * (1 - Math.abs(Math.cos(Math.toRadians(rotateDegreeX)))));
-                camera.translate(0, 0, z);
-            }
+//            if (attrs.isTranslateYZ()) {
+//                float z = (float) (wheelRadius * (1 - Math.abs(Math.cos(Math.toRadians(rotateDegreeX)))));
+//                camera.translate(tempX, 0, z);
+//            }
             //旋转x轴实现圆弧效果。如果不旋转x轴，就没有圆弧效果，只是平铺而已
             camera.rotateX(-rotateDegreeX);
             camera.getMatrix(matrix);
@@ -125,6 +141,7 @@ abstract class WheelDecoration extends RecyclerView.ItemDecoration {
             matrix.postTranslate(parentCenterX, itemCenterY);
             c.concat(matrix);
         }
+        Log.d("NRRR", "rect:" + rect);
 
         drawItem(c, rect, realPosition, centerRealPosition);
         c.restore();
@@ -146,7 +163,7 @@ abstract class WheelDecoration extends RecyclerView.ItemDecoration {
      */
     abstract void drawDivider(Canvas c, Rect rect);
 
-    static double radianToRadio(int radian, float degree) {
+    static double radianToRadius(int radian, float degree) {
         return radian * 180d / (degree * Math.PI);
     }
 }
